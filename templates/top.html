@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block header %}
+<h2>{% block title %}入退室管理{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+<div>
+    <form method="POST" action="record">
+        <label for="id">学籍番号/UTID-13をキーボード/バーコードリーダーで入力</label>
+        <br>
+        <input name="id" name="id" required>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<div>
+    <h4>管理ツール</h4>
+    <form method="POST" action="export">
+        <input type="submit" value="データ出力">
+    </form>
+    <br>
+    <form method="POST" action="register">
+        <input type="submit" value="メンバー登録/削除">
+    </form>
+</div>
+{% endblock %}
