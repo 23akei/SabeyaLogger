@@ -7,7 +7,7 @@ app = Flask(__name__)
 def top():
     return render_template("top.html")
 
-@app.route(methods = ["POST"])
+@app.route("/hoge", methods = ["POST"])
 def record():
     id_num = 0
     
@@ -20,14 +20,29 @@ def record():
     elif(len(id_input) == 13):
         id_num = int(id_input[3:11])
     else:
-        return render_template("error_input.html")
+        return render_template("error.html")
 
     con = sqlite3.connect("./data.db")
     cur = con.cursor()
-    sql = "select * from log;"
-    former_log = list(cur.execute(sql))
+    former_log = list(cur.execute("select * from Log where person=? order by date_time;", (id_num)))
+    member = list(cur.execute("select name from where id=? Member;"), (id_num))
 
+    if id_num not in [row["id"] for row in member]:
+        return render_template("error.html")
     
+    status_register = None
+    if former_log[-1]["status"] == "in":
+        status_register = "out"
+    elif former_log[-1]["status"] == "out":
+        status_register = "in"
+    else:
+        # status not defined
+        return render_template("error.html")
+    
+    sql_register = "insert into Log(status, person) values(?, ?);"
+    cur.execute(sql_register, (status_register, id_num))
+
+    return render_template("success.html",status=status_register,name=member[0]["name"])
 
 if __name__ == "__main__":
     app.run()

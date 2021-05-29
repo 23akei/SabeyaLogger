@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block header %}
+<h2>{% block title %}入退室管理 - 登録完了{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    <h3>{{name}}, 
+{% if status == "in" %}
+    Welcome!
+{% if status == "out" %}
+    Bye!
+{% endif %}
+    </h3>
+{% endblock %}
